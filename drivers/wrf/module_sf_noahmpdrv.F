@@ -2996,8 +2996,9 @@ end function checkIfHarvest
                                 T3D,           QV3D,          U_PHY,      V_PHY,   SWDOWN,  & ! IN : Forcing
                              SWDDIR,         SWDDIF,                                        &
 		                GLW,          P8W3D,         RAINBL,       DZ8W,      ZNT,  & ! IN : Forcing
-                                TSK,            HFX,            QFX,         LH,   GRDFLX,  & ! IN/OUT : LSM 
-		             ALBEDO,          EMISS,           QSFC,                        & ! IN/OUT : LSM 
+                                TSK,           TRAD,                        & ! IN/OUT : LSM     ! xue.lingbo 2026/05/11
+                                HFX,            QFX,         LH,   GRDFLX,  & ! IN/OUT : LSM 
+		             ALBEDO,          EMISS,           QSFC,     NLCAT,    LANDUSEF,            & ! IN/OUT : LSM    ! xue.lingbo 2026/05/11
                             ids,ide,        jds,jde,        kds,kde,                        &
                             ims,ime,        jms,jme,        kms,kme,                        &
                             its,ite,        jts,jte,        kts,kte,                        &
@@ -3007,7 +3008,8 @@ end function checkIfHarvest
 	                   tc_urb2d,       qc_urb2d,       uc_urb2d,                        & !H urban
                          xxxr_urb2d,     xxxb_urb2d,     xxxg_urb2d, xxxc_urb2d,            & !H urban
                           trl_urb3d,      tbl_urb3d,      tgl_urb3d,                        & !H urban
-                           sh_urb2d,       lh_urb2d,        g_urb2d,   rn_urb2d,  ts_urb2d, & !H urban
+                           sh_urb2d,       lh_urb2d,        g_urb2d,   rn_urb2d,            & !H urban
+                           ts_urb2d,     trad_urb2d,                                        & !H urban     ! xue.lingbo 2026/05/11
                          psim_urb2d,     psih_urb2d,      u10_urb2d,  v10_urb2d,            & !O urban
                        GZ1OZ0_urb2d,     AKMS_URB2D,                                        & !O urban
                           th2_urb2d,       q2_urb2d,      ust_urb2d,                        & !O urban
@@ -3018,7 +3020,7 @@ end function checkIfHarvest
                         drelr_urb2d,    drelb_urb2d,    drelg_urb2d,                        & !H urban
                       flxhumr_urb2d,  flxhumb_urb2d,  flxhumg_urb2d,                        & !H urban
                              julian,          julyr,                                        & !H urban
-                          frc_urb2d,    utype_urb2d,                                        & !I urban
+                          frc_urb2d,    utype_urb2d,            ahe, distributed_ahe_opt,   & !I urban     ! xue.lingbo 2026/05/11
                                 chs,           chs2,           cqs2,                        & !H
                       num_urban_ndm,  urban_map_zrd,  urban_map_zwd, urban_map_gd,          & !I multi-layer urban
                        urban_map_zd,  urban_map_zdf,   urban_map_bd, urban_map_wd,          & !I multi-layer urban
@@ -3061,6 +3063,8 @@ end function checkIfHarvest
 
     INTEGER,                                         INTENT(IN   ) ::  sf_urban_physics   ! urban physics option
     INTEGER,                                         INTENT(IN   ) ::  NSOIL     ! number of soil layers
+    INTEGER,                                         INTENT(IN   ) ::  NLCAT     ! number of land use categories  ! xue.lingbo 2026/05/11
+    INTEGER,                                         INTENT(IN   ) ::  distributed_ahe_opt    ! xue.lingbo 2026/05/11
     INTEGER, DIMENSION( ims:ime,          jms:jme ), INTENT(IN   ) ::  IVGTYP    ! vegetation type
     INTEGER,                                         INTENT(IN   ) ::  ITIMESTEP ! timestep number
     REAL,                                            INTENT(IN   ) ::  DT        ! timestep [s]
@@ -3079,6 +3083,7 @@ end function checkIfHarvest
     REAL,    DIMENSION( ims:ime, kms:kme, jms:jme ), INTENT(IN   ) ::  DZ8W      ! thickness of atmo layers [m]
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  ZNT       ! combined z0 sent to coupled model
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  TSK       ! surface radiative temperature [K]
+    REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  TRAD      ! surface radiative temperature [K]   ! xue.lingbo 2026/05/11
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  HFX       ! sensible heat flux [W m-2]
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  QFX       ! latent heat flux [kg s-1 m-2]
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  LH        ! latent heat flux [W m-2]
@@ -3086,6 +3091,7 @@ end function checkIfHarvest
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  ALBEDO    ! total grid albedo []
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  EMISS     ! surface bulk emissivity
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  QSFC      ! bulk surface mixing ratio
+    REAL,    DIMENSION( ims:ime, NLCAT,   jms:jme ), INTENT(IN   ) ::  LANDUSEF  ! Landuse fraction     ! xue.lingbo 2026/05/11
 
     INTEGER,  INTENT(IN   )   ::     ids,ide, jds,jde, kds,kde,  &  ! d -> domain
          &                           ims,ime, jms,jme, kms,kme,  &  ! m -> memory
@@ -3099,6 +3105,7 @@ end function checkIfHarvest
 
      INTEGER,        DIMENSION( ims:ime, jms:jme ),          INTENT(IN   ) :: UTYPE_URB2D
      REAL,           DIMENSION( ims:ime, jms:jme ),          INTENT(IN   ) :: FRC_URB2D
+     REAL,           DIMENSION( ims:ime, jms:jme ),          INTENT(IN   ) :: AHE                 ! xue.lingbo 2026/05/11
 
      REAL, OPTIONAL, DIMENSION(1:num_roof_layers),           INTENT(IN   ) :: DZR
      REAL, OPTIONAL, DIMENSION(1:num_wall_layers),           INTENT(IN   ) :: DZB
@@ -3117,6 +3124,7 @@ end function checkIfHarvest
 ! local variables lsm --> urban
 
      INTEGER :: UTYPE_URB ! urban type [urban=1, suburban=2, rural=3]
+     REAL    :: AHE_URB      ! anthropogenic heat flux [W/m/m]                 ! xue.lingbo 2026/05/11
      REAL    :: TA_URB       ! potential temp at 1st atmospheric level [K]
      REAL    :: QA_URB       ! mixing ratio at 1st atmospheric level  [kg/kg]
      REAL    :: UA_URB       ! wind speed at 1st atmospheric level    [m/s]
@@ -3194,6 +3202,7 @@ end function checkIfHarvest
      REAL, OPTIONAL, DIMENSION( ims:ime, jms:jme ), INTENT(INOUT) :: G_URB2D
      REAL, OPTIONAL, DIMENSION( ims:ime, jms:jme ), INTENT(INOUT) :: RN_URB2D
      REAL, OPTIONAL, DIMENSION( ims:ime, jms:jme ), INTENT(INOUT) :: TS_URB2D
+     REAL, OPTIONAL, DIMENSION( ims:ime, jms:jme ), INTENT(INOUT) :: TRAD_URB2D           ! xue.lingbo 2026/05/11
 
      REAL, OPTIONAL, DIMENSION( ims:ime, 1:num_roof_layers, jms:jme ), INTENT(INOUT) :: TRL_URB3D
      REAL, OPTIONAL, DIMENSION( ims:ime, 1:num_wall_layers, jms:jme ), INTENT(INOUT) :: TBL_URB3D
@@ -3234,6 +3243,7 @@ end function checkIfHarvest
      REAL :: CHS_URB
      REAL :: CHS2_URB
      REAL :: UST_URB
+     REAL :: TRAD_URB         ! surface radiative temperature    [K]   ! xue.lingbo 2026/05/11
 
 ! NUDAPT Parameters urban --> lam
 
@@ -3385,9 +3395,21 @@ ILOOP : DO I = its, ite
   IF( IVGTYP(I,J) == ISURBAN_TABLE .or. IVGTYP(I,J) == LCZ_1_TABLE .or. IVGTYP(I,J) == LCZ_2_TABLE .or. &
       IVGTYP(I,J) == LCZ_3_TABLE   .or. IVGTYP(I,J) == LCZ_4_TABLE .or. IVGTYP(I,J) == LCZ_5_TABLE .or. &
       IVGTYP(I,J) == LCZ_6_TABLE   .or. IVGTYP(I,J) == LCZ_7_TABLE .or. IVGTYP(I,J) == LCZ_8_TABLE .or. &
-      IVGTYP(I,J) == LCZ_9_TABLE   .or. IVGTYP(I,J) == LCZ_10_TABLE .or. IVGTYP(I,J) == LCZ_11_TABLE ) THEN
+      IVGTYP(I,J) == LCZ_9_TABLE   .or. IVGTYP(I,J) == LCZ_10_TABLE .or. IVGTYP(I,J) == LCZ_11_TABLE .or. &
+      (distributed_ahe_opt==3 .and. LANDUSEF(I,13,J) > 0.0 ) )THEN         ! xue.lingbo 2026/05/11
 
-    UTYPE_URB = UTYPE_URB2D(I,J) !urban type (low, high or industrial)
+    IF (distributed_ahe_opt == 3 .and. LANDUSEF(I,13,J) > 0.0) THEN        ! xue.lingbo 2026/05/11
+      UTYPE_URB = 2
+    ELSE
+      UTYPE_URB = UTYPE_URB2D(I,J) !urban type (low, high or industrial)
+    END IF
+
+    IF (distributed_ahe_opt == 3 .and. LANDUSEF(I,13,J) > 0.0) THEN        ! xue.lingbo 2026/05/11
+      IF (FRC_URB2D(I,J) <= 0.0) FRC_URB2D(I,J) = 0.01
+      AHE_URB = AHE(I,J) / (LANDUSEF(I,13,J)*FRC_URB2D(I,J))
+    ELSE
+        AHE_URB = 0.0
+    END IF
 
     TA_URB    = T3D(I,1,J)                                ! [K]            
     QA_URB    = QV3D(I,1,J)/(1.0+QV3D(I,1,J))             ! [kg/kg]       
@@ -3500,6 +3522,7 @@ ILOOP : DO I = its, ite
              ZA_URB, DECLIN_URB,   COSZ_URB,    OMG_URB,                               & ! I
            XLAT_URB,   DELT_URB,    ZNT_URB,                                           & ! I
             CHS_URB,   CHS2_URB,                                                       & ! I
+            AHE_URB,                                                                   & ! I    ! xue.lingbo 2026/05/11
              TR_URB,     TB_URB,     TG_URB,     TC_URB,   QC_URB,   UC_URB,           & ! H
             TRL_URB,    TBL_URB,    TGL_URB,                                           & ! H
            XXXR_URB,   XXXB_URB,   XXXG_URB,   XXXC_URB,                               & ! H
@@ -3513,25 +3536,42 @@ ILOOP : DO I = its, ite
            TGRL_URB,    SMR_URB,   CMGR_URB,   CHGR_URB,   jmonth,                     & ! H
           DRELR_URB,  DRELB_URB,                                                       & ! H
           DRELG_URB,FLXHUMR_URB,FLXHUMB_URB,FLXHUMG_URB,                               &
-          lf_urb_s, z0_urb, vegfrac)
+          lf_urb_s, z0_urb, vegfrac, TRAD_URB)                                                  ! xue.lingbo 2026/05/11
 
     TS_URB2D(I,J) = TS_URB
+    TRAD_URB2D(I,J) = TRAD_URB                                                                  ! xue.lingbo 2026/05/11
 
-    ALBEDO(I,J)   = FRC_URB2D(I,J) * ALB_URB + (1-FRC_URB2D(I,J)) * ALBEDO(I,J)        ![-]      
-    HFX(I,J)      = FRC_URB2D(I,J) * SH_URB  + (1-FRC_URB2D(I,J)) * HFX(I,J)           ![W/m/m] 
-    QFX(I,J)      = FRC_URB2D(I,J) * LH_KINEMATIC_URB &
-                       + (1-FRC_URB2D(I,J))* QFX(I,J)                                  ![kg/m/m/s] 
-    LH(I,J)       = FRC_URB2D(I,J) * LH_URB  + (1-FRC_URB2D(I,J)) * LH(I,J)            ![W/m/m]   
-    GRDFLX(I,J)   = FRC_URB2D(I,J) * (G_URB*(-1.0)) + (1-FRC_URB2D(I,J)) * GRDFLX(I,J) ![W/m/m] positive: downward direction
-    TSK(I,J)      = FRC_URB2D(I,J) * TS_URB  + (1-FRC_URB2D(I,J)) * TSK(I,J)           ![K]    
-!    Q1            = QSFC(I,J)/(1.0+QSFC(I,J))                                         
-!    Q1            = FRC_URB2D(I,J) * QS_URB  + (1-FRC_URB2D(I,J)) * Q1                 ![-]
 
-! Convert QSFC back to mixing ratio
+    IF (distributed_ahe_opt == 3 .and. LANDUSEF(I,13,J) > 0.0) THEN                             ! xue.lingbo 2026/04/08
+      ! the real urban fraction is LANDUSEF(I,13,J) * FRC_URB2D(I,J)                                   
+      ALBEDO(I,J)   = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * ALB_URB + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * ALBEDO(I,J)        ![-]      
+      HFX(I,J)      = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * SH_URB  + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * HFX(I,J)           ![W/m/m] 
+      QFX(I,J)      = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * LH_KINEMATIC_URB &
+                        + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J))* QFX(I,J)                                  ![kg/m/m/s] 
+      LH(I,J)       = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * LH_URB  + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * LH(I,J)            ![W/m/m]   
+      GRDFLX(I,J)   = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * (G_URB*(-1.0)) + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * GRDFLX(I,J) ![W/m/m] positive: downward direction
+      TSK(I,J)      = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * TS_URB  + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * TSK(I,J)           ![K]    
+      TRAD(I,J)     = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * TRAD_URB + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * TRAD(I,J)       ![K]       ! xue.lingbo 2026/05/11 
 
-!    QSFC(I,J)     = Q1/(1.0-Q1)
-                   QSFC(I,J)= FRC_URB2D(I,J)*QS_URB+(1-FRC_URB2D(I,J))*QSFC(I,J)               !!   QSFC(I,J)=QSFC1D
-    UST(I,J)      = FRC_URB2D(I,J) * UST_URB + (1-FRC_URB2D(I,J)) * UST(I,J)     ![m/s]
+  !    Q1            = QSFC(I,J)/(1.0+QSFC(I,J))                                         
+  !    Q1            = FRC_URB2D(I,J) * QS_URB  + (1-FRC_URB2D(I,J)) * Q1                 ![-]
+
+  ! Convert QSFC back to mixing ratio
+
+  !    QSFC(I,J)     = Q1/(1.0-Q1)
+                    QSFC(I,J)= LANDUSEF(I,13,J) * FRC_URB2D(I,J)*QS_URB+(1-LANDUSEF(I,13,J) * FRC_URB2D(I,J))*QSFC(I,J)               !!   QSFC(I,J)=QSFC1D
+      UST(I,J)      = LANDUSEF(I,13,J) * FRC_URB2D(I,J) * UST_URB + (1-LANDUSEF(I,13,J) * FRC_URB2D(I,J)) * UST(I,J)     ![m/s]
+    ELSE
+      ALBEDO(I,J)   = FRC_URB2D(I,J) * ALB_URB + (1-FRC_URB2D(I,J)) * ALBEDO(I,J)
+      HFX(I,J)      = FRC_URB2D(I,J) * SH_URB  + (1-FRC_URB2D(I,J)) * HFX(I,J)
+      QFX(I,J)      = FRC_URB2D(I,J) * LH_KINEMATIC_URB + (1-FRC_URB2D(I,J)) * QFX(I,J)
+      LH(I,J)       = FRC_URB2D(I,J) * LH_URB  + (1-FRC_URB2D(I,J)) * LH(I,J)
+      GRDFLX(I,J)   = FRC_URB2D(I,J) * (G_URB*(-1.0)) + (1-FRC_URB2D(I,J)) * GRDFLX(I,J)
+      TSK(I,J)      = FRC_URB2D(I,J) * TS_URB  + (1-FRC_URB2D(I,J)) * TSK(I,J)
+      TRAD(I,J)     = FRC_URB2D(I,J) * TRAD_URB + (1-FRC_URB2D(I,J)) * TRAD(I,J)
+      QSFC(I,J)     = FRC_URB2D(I,J) * QS_URB  + (1-FRC_URB2D(I,J)) * QSFC(I,J)
+      UST(I,J)      = FRC_URB2D(I,J) * UST_URB + (1-FRC_URB2D(I,J)) * UST(I,J)
+    END IF
 
 ! Renew Urban State Variables
 
