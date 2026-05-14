@@ -3392,11 +3392,11 @@ JLOOP : DO J = jts, jte
 ILOOP : DO I = its, ite
 
 
-  IF( IVGTYP(I,J) == ISURBAN_TABLE .or. IVGTYP(I,J) == LCZ_1_TABLE .or. IVGTYP(I,J) == LCZ_2_TABLE .or. &
+  IF( ( (IVGTYP(I,J) == ISURBAN_TABLE .or. IVGTYP(I,J) == LCZ_1_TABLE .or. IVGTYP(I,J) == LCZ_2_TABLE .or. &
       IVGTYP(I,J) == LCZ_3_TABLE   .or. IVGTYP(I,J) == LCZ_4_TABLE .or. IVGTYP(I,J) == LCZ_5_TABLE .or. &
       IVGTYP(I,J) == LCZ_6_TABLE   .or. IVGTYP(I,J) == LCZ_7_TABLE .or. IVGTYP(I,J) == LCZ_8_TABLE .or. &
-      IVGTYP(I,J) == LCZ_9_TABLE   .or. IVGTYP(I,J) == LCZ_10_TABLE .or. IVGTYP(I,J) == LCZ_11_TABLE .or. &
-      (distributed_ahe_opt==3 .and. LANDUSEF(I,13,J) > 0.0 ) )THEN         ! xue.lingbo 2026/05/11
+      IVGTYP(I,J) == LCZ_9_TABLE   .or. IVGTYP(I,J) == LCZ_10_TABLE .or. IVGTYP(I,J) == LCZ_11_TABLE) .and. distributed_ahe_opt .ne. 3) .or. &
+      (distributed_ahe_opt==3 .and. LANDUSEF(I,13,J) > 0.0 ) ) THEN        ! xue.lingbo 2026/05/11
 
     IF (distributed_ahe_opt == 3 .and. LANDUSEF(I,13,J) > 0.0) THEN        ! xue.lingbo 2026/05/11
       UTYPE_URB = 2
@@ -3405,10 +3405,9 @@ ILOOP : DO I = its, ite
     END IF
 
     IF (distributed_ahe_opt == 3 .and. LANDUSEF(I,13,J) > 0.0) THEN        ! xue.lingbo 2026/05/11
-      IF (FRC_URB2D(I,J) <= 0.0) FRC_URB2D(I,J) = 0.01
-      AHE_URB = AHE(I,J) / (LANDUSEF(I,13,J)*FRC_URB2D(I,J))
+      AHE_URB = AHE(I,J) / (LANDUSEF(I,13,J) * MAX(FRC_URB2D(I,J), 0.01))  ! MAX prevents division by zero: FRC_URB2D must not be 0
     ELSE
-        AHE_URB = 0.0
+      AHE_URB = 0.0
     END IF
 
     TA_URB    = T3D(I,1,J)                                ! [K]            
@@ -3522,6 +3521,7 @@ ILOOP : DO I = its, ite
              ZA_URB, DECLIN_URB,   COSZ_URB,    OMG_URB,                               & ! I
            XLAT_URB,   DELT_URB,    ZNT_URB,                                           & ! I
             CHS_URB,   CHS2_URB,                                                       & ! I
+            distributed_ahe_opt,                                                       & ! I    ! xue.lingbo 2026/05/11
             AHE_URB,                                                                   & ! I    ! xue.lingbo 2026/05/11
              TR_URB,     TB_URB,     TG_URB,     TC_URB,   QC_URB,   UC_URB,           & ! H
             TRL_URB,    TBL_URB,    TGL_URB,                                           & ! H
