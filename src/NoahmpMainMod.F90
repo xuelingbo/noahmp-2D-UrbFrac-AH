@@ -80,7 +80,8 @@ contains
     !--------------------------------------------------------------------- 
 
     ! call sprinkler irrigation before canopy process to have canopy interception
-    if ( (FlagCropland .eqv. .true.) .and. (IrrigationAmtSprinkler > 0.0) ) &
+    if ( IrrigationAmtSprinkler > 0.0 ) &            ! xue.lingbo 2026/10/15 for Adelaide parks
+    !if ( (FlagCropland .eqv. .true.) .and. (IrrigationAmtSprinkler > 0.0) ) &
        call IrrigationSprinkler(noahmp)
 
     !---------------------------------------------------------------------
