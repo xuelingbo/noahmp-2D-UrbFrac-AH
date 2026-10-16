@@ -28,6 +28,7 @@ contains
 ! ----------------------------------------------------------------------
     associate(                                                                       &
               FlagCropland            => noahmp%config%domain%FlagCropland          ,& ! in,    flag to identify croplands
+              VegType                 => noahmp%config%domain%VegType               ,& ! in,    vegetation type (land use index)  ! 2026/10/16 for Adelaide parks
               FlagSoilProcess         => noahmp%config%domain%FlagSoilProcess       ,& ! in,    flag to calculate soil processes
               OptIrrigationMethod     => noahmp%config%nmlist%OptIrrigationMethod   ,& ! in,    irrigation method option
               IrriFracThreshold       => noahmp%water%param%IrriFracThreshold       ,& ! in,    irrigation fraction threshold
@@ -66,7 +67,8 @@ contains
 
     ! trigger irrigation only at soil water timestep to be consistent for solving soil water
     if ( FlagSoilProcess .eqv. .true. ) then
-       if ( (IrrigationFracGrid >= IrriFracThreshold) .and. &   ! xue.lingbo 2026/10/15 for Adelaide parks
+       if ( ((VegType == 8) .or. (VegType == 9)) .and. &        ! xue.lingbo 2026/10/16 for Adelaide parks
+            (IrrigationFracGrid >= IrriFracThreshold) .and. &
        ! if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) .and. &
             (RainfallRefHeight < (IrriStopPrecipThr/3600.0)) .and. &
             ((IrrigationAmtSprinkler+IrrigationAmtMicro+IrrigationAmtFlood) == 0.0) ) then

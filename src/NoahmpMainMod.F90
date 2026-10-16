@@ -41,6 +41,7 @@ contains
               FlagDynamicCrop        => noahmp%config%domain%FlagDynamicCrop      ,& ! in,    flag to activate dynamic crop model
               OptCropModel           => noahmp%config%nmlist%OptCropModel         ,& ! in,    option for crop model
               IrrigationAmtSprinkler => noahmp%water%state%IrrigationAmtSprinkler ,& ! inout, irrigation water amount [m] for sprinkler
+              VegType                => noahmp%config%domain%VegType              ,& ! in,    vegetation type (land use index)  ! xue.lingbo 2026/10/16 for Adelaide parks
               FlagCropland           => noahmp%config%domain%FlagCropland          & ! out,   flag to identify croplands
              )
 ! ----------------------------------------------------------------------
@@ -80,7 +81,7 @@ contains
     !--------------------------------------------------------------------- 
 
     ! call sprinkler irrigation before canopy process to have canopy interception
-    if ( IrrigationAmtSprinkler > 0.0 ) &            ! xue.lingbo 2026/10/15 for Adelaide parks
+    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationAmtSprinkler > 0.0) ) &   ! xue.lingbo 2026/10/16 for Adelaide parks
     !if ( (FlagCropland .eqv. .true.) .and. (IrrigationAmtSprinkler > 0.0) ) &
        call IrrigationSprinkler(noahmp)
 
