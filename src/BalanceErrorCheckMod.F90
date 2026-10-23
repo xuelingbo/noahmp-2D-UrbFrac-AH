@@ -79,6 +79,7 @@ contains
               ThicknessSnowSoilLayer  => noahmp%config%domain%ThicknessSnowSoilLayer ,& ! in,    thickness of snow/soil layers [m]
               MainTimeStep            => noahmp%config%domain%MainTimeStep           ,& ! in,    main noahmp timestep [s]
               FlagCropland            => noahmp%config%domain%FlagCropland           ,& ! in,    flag to identify croplands
+              VegType                 => noahmp%config%domain%VegType                ,& ! in,    vegetation type (land use index)  ! xue.lingbo 2026/10/22 for Adelaide parks
               FlagSoilProcess         => noahmp%config%domain%FlagSoilProcess        ,& ! in,    flag to calculate soil process
               IrriFracThreshold       => noahmp%water%param%IrriFracThreshold        ,& ! in,    irrigation fraction parameter
               IrrigationFracGrid      => noahmp%water%state%IrrigationFracGrid       ,& ! in,    total input irrigation fraction
@@ -111,7 +112,8 @@ contains
 ! ----------------------------------------------------------------------
 
     ! before water balance check, add irrigation water to precipitation
-    if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then
+    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then   ! xue.lingbo 2026/10/22 for Adelaide parks
+    !if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then
        PrecipTotRefHeight = PrecipTotRefHeight + IrrigationRateSprinkler * 1000.0 / MainTimeStep  ! irrigation
     endif
 

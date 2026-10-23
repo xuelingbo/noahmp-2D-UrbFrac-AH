@@ -28,7 +28,7 @@ contains
 ! ----------------------------------------------------------------------
     associate(                                                                       &
               FlagCropland            => noahmp%config%domain%FlagCropland          ,& ! in,    flag to identify croplands
-              VegType                 => noahmp%config%domain%VegType               ,& ! in,    vegetation type (land use index)  ! 2026/10/16 for Adelaide parks
+              VegType                 => noahmp%config%domain%VegType               ,& ! in,    vegetation type (land use index)  ! xue.lingbo 2026/10/16 for Adelaide parks
               FlagSoilProcess         => noahmp%config%domain%FlagSoilProcess       ,& ! in,    flag to calculate soil processes
               OptIrrigationMethod     => noahmp%config%nmlist%OptIrrigationMethod   ,& ! in,    irrigation method option
               IrriFracThreshold       => noahmp%water%param%IrriFracThreshold       ,& ! in,    irrigation fraction threshold

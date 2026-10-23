@@ -81,6 +81,7 @@ contains
               OptSnowSoilTempTime     => noahmp%config%nmlist%OptSnowSoilTempTime    ,& ! in,    options for snow/soil temperature time scheme
               OptSnowCoverGround      => noahmp%config%nmlist%OptSnowCoverGround     ,& ! in,    options for ground snow cover
               FlagCropland            => noahmp%config%domain%FlagCropland           ,& ! in,    flag to identify croplands
+              VegType                 => noahmp%config%domain%VegType                ,& ! in,    vegetation type (land use index)  ! xue.lingbo 2026/10/22 for Adelaide parks
               FlagSoilProcess         => noahmp%config%domain%FlagSoilProcess        ,& ! in,    flag to determine if calculating soil processes
               NumSoilTimeStep         => noahmp%config%domain%NumSoilTimeStep        ,& ! in,    number of time step for calculating soil processes
               SoilTimeStep            => noahmp%config%domain%SoilTimeStep           ,& ! in,    soil process timestep [s]
@@ -336,7 +337,8 @@ contains
     call SoilSnowWaterPhaseChange(noahmp)
 
     ! update sensible heat flux due to sprinkler irrigation evaporation
-    if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &
+    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &   ! xue.lingbo 2026/10/22 for Adelaide parks
+    !if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &
        HeatSensibleSfc = HeatSensibleSfc - HeatLatentIrriEvap
 
     ! update total surface albedo
