@@ -15,6 +15,7 @@ module SurfaceEnergyFluxVegetatedMod
   use ResistanceLeafToGroundMod,           only : ResistanceLeafToGround
   use ResistanceCanopyStomataBallBerryMod, only : ResistanceCanopyStomataBallBerry
   use ResistanceCanopyStomataJarvisMod,    only : ResistanceCanopyStomataJarvis
+  use ResistanceCanopyStomataMedlynMod,    only : ResistanceCanopyStomataMedlyn
 
   implicit none
 
@@ -257,6 +258,12 @@ contains
              call ResistanceCanopyStomataJarvis(noahmp, IndexShade)
              IndexShade = 1 ! shaded case
              call ResistanceCanopyStomataJarvis(noahmp, IndexShade)
+          endif
+          if ( OptStomataResistance == 3 ) then  ! Medlyn
+             IndexShade = 0 ! sunlit case
+             call ResistanceCanopyStomataMedlyn(noahmp, IndexShade)
+             IndexShade = 1 ! shaded case
+             call ResistanceCanopyStomataMedlyn(noahmp, IndexShade)
           endif
        endif
 

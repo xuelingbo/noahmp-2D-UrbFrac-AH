@@ -140,6 +140,10 @@
  BP       = 1.E15,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3, 1.E15,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3,  2.E3, 1.E15,  2.E3, 1.E15, 1.E15,
  ! MP: slope of conductance-to-photosynthesis relationship
  MP       =   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   6.0,   9.0,   6.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,   9.0,
+ ! MEDLYNG1: Medlyn stomatal slope parameter g1 (kPa^0.5), used when opt_crs=3; PFT values after Lin et al. (2015) / De Kauwe et al. (2015)
+ MEDLYNG1 =   4.45,   5.79,   5.79,   5.79,   5.52,   5.12,   5.25,   4.70,   4.97,   4.70,   4.45,   2.35,   4.12,   2.35,   3.40,   4.45,   5.25,   4.45,   4.45,   2.22,   2.22,   2.22,   2.22,   4.45,   4.45,   4.45,   4.45,
+ ! MEDLYNG0: Medlyn minimum leaf conductance g0 (umol/m2/s), used when opt_crs=3; 1.E15 for non-vegetated types as BP
+ MEDLYNG0 =  1.E15,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,  1.E15,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,   1.E2,  1.E15,   1.E2,  1.E15,  1.E15,
  ! QE25: quantum efficiency at 25degC (umol CO2/umol photon)
  QE25     =  0.00,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.00,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.06,  0.00,  0.06,  0.00,  0.00,
  ! RMS25: stem maintenance respiration at 25c (umol CO2/Kg bio/s)
@@ -336,6 +340,10 @@
  BP       =  2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,   2.E3,  1.E15,   2.E3,  1.E15,   2.E3,  1.E15,   2.E3,   2.E3,   2.E3,
  ! MP: slope of conductance-to-photosynthesis relationship
  MP       =   6.0,    9.0,    6.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,    9.0,
+ ! MEDLYNG1: Medlyn stomatal slope parameter g1 (kPa^0.5), used when opt_crs=3; PFT values after Lin et al. (2015) / De Kauwe et al. (2015)
+ MEDLYNG1 =    2.35,    4.12,    2.35,    4.45,    3.40,    4.70,    4.70,    4.70,    4.70,    5.25,    5.25,    5.79,    4.45,    5.52,    4.45,    4.45,    4.45,    2.22,    2.22,    2.22,
+ ! MEDLYNG0: Medlyn minimum leaf conductance g0 (umol/m2/s), used when opt_crs=3; 1.E15 for non-vegetated types as BP
+ MEDLYNG0 =    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,    1.E2,   1.E15,    1.E2,   1.E15,    1.E2,   1.E15,    1.E2,    1.E2,    1.E2,
  ! QE25: quantum efficiency at 25degC (umol CO2/umol photon)
  QE25     =  0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.06,   0.00,   0.06,   0.00,   0.06,   0.00,   0.06,   0.06,   0.06,
  ! RMS25: stem maintenance respiration at 25c (umol CO2/Kg bio/s)

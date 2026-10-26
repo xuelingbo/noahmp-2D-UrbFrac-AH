@@ -53,7 +53,7 @@ contains
                                               AKC, KO25, AKO, AVCMX, AQE, LTOVRC, DILEFC, DILEFW, RMF25, SLA, FRAGR, TMIN,   &
                                               VCMX25, TDLEF, BP, MP, QE25, RMS25, RMR25, ARM, FOLNMX, WDPOOL, WRRAT, MRP,    &
                                               NROOT, RGL, RS, HS, TOPT, RSMAX, RTOVRC, RSWOODC, BF, WSTRC, LAIMIN, CBIOM,    &
-                                              XSAMIN
+                                              XSAMIN, MEDLYNG1, MEDLYNG0
     namelist / noahmp_usgs_veg_categories /   VEG_DATASET_DESCRIPTION, NVEG
     namelist / noahmp_usgs_parameters     /   ISURBAN, ISWATER, ISBARREN, ISICE, ISCROP, EBLFOREST, NATURAL, URBTYPE_beg,    &
                                               LCZ_1, LCZ_2, LCZ_3, LCZ_4, LCZ_5, LCZ_6, LCZ_7, LCZ_8, LCZ_9, LCZ_10, LCZ_11, &
@@ -61,7 +61,7 @@ contains
                                               AKC, KO25, AKO, AVCMX, AQE, LTOVRC, DILEFC, DILEFW, RMF25, SLA, FRAGR, TMIN,   &
                                               VCMX25, TDLEF, BP, MP, QE25, RMS25, RMR25, ARM, FOLNMX, WDPOOL, WRRAT, MRP,    &
                                               NROOT, RGL, RS, HS, TOPT, RSMAX, RTOVRC, RSWOODC, BF, WSTRC, LAIMIN, CBIOM,    &
-                                              XSAMIN, SAI_JAN, SAI_FEB, SAI_MAR, SAI_APR, SAI_MAY,                           &
+                                              XSAMIN, MEDLYNG1, MEDLYNG0, SAI_JAN, SAI_FEB, SAI_MAR, SAI_APR, SAI_MAY,       &
                                               SAI_JUN, SAI_JUL, SAI_AUG, SAI_SEP, SAI_OCT, SAI_NOV, SAI_DEC, LAI_JAN,        &
                                               LAI_FEB, LAI_MAR, LAI_APR, LAI_MAY, LAI_JUN, LAI_JUL, LAI_AUG, LAI_SEP,        &
                                               LAI_OCT, LAI_NOV, LAI_DEC, RHOL_VIS, RHOL_NIR, RHOS_VIS, RHOS_NIR, TAUL_VIS,   &
@@ -73,7 +73,7 @@ contains
                                               AKC, KO25, AKO, AVCMX, AQE, LTOVRC, DILEFC, DILEFW, RMF25, SLA, FRAGR, TMIN,   &
                                               VCMX25, TDLEF, BP, MP, QE25, RMS25, RMR25, ARM, FOLNMX, WDPOOL, WRRAT, MRP,    &
                                               NROOT, RGL, RS, HS, TOPT, RSMAX, RTOVRC, RSWOODC, BF, WSTRC, LAIMIN, CBIOM,    &
-                                              XSAMIN, SAI_JAN, SAI_FEB, SAI_MAR, SAI_APR, SAI_MAY,                           &
+                                              XSAMIN, MEDLYNG1, MEDLYNG0, SAI_JAN, SAI_FEB, SAI_MAR, SAI_APR, SAI_MAY,       &
                                               SAI_JUN, SAI_JUL, SAI_AUG, SAI_SEP, SAI_OCT, SAI_NOV, SAI_DEC, LAI_JAN,        &
                                               LAI_FEB, LAI_MAR, LAI_APR, LAI_MAY, LAI_JUN, LAI_JUL, LAI_AUG, LAI_SEP,        &
                                               LAI_OCT, LAI_NOV, LAI_DEC, RHOL_VIS, RHOL_NIR, RHOS_VIS, RHOS_NIR, TAUL_VIS,   &
@@ -257,6 +257,8 @@ contains
     if ( .not. allocated (NoahmpIO%AVCMX_TABLE)  ) allocate( NoahmpIO%AVCMX_TABLE  (MVT) )
     if ( .not. allocated (NoahmpIO%BP_TABLE)     ) allocate( NoahmpIO%BP_TABLE     (MVT) )
     if ( .not. allocated (NoahmpIO%MP_TABLE)     ) allocate( NoahmpIO%MP_TABLE     (MVT) )
+    if ( .not. allocated (NoahmpIO%MEDLYNG1_TABLE) ) allocate( NoahmpIO%MEDLYNG1_TABLE (MVT) )
+    if ( .not. allocated (NoahmpIO%MEDLYNG0_TABLE) ) allocate( NoahmpIO%MEDLYNG0_TABLE (MVT) )
     if ( .not. allocated (NoahmpIO%QE25_TABLE)   ) allocate( NoahmpIO%QE25_TABLE   (MVT) )
     if ( .not. allocated (NoahmpIO%AQE_TABLE)    ) allocate( NoahmpIO%AQE_TABLE    (MVT) )
     if ( .not. allocated (NoahmpIO%RMF25_TABLE)  ) allocate( NoahmpIO%RMF25_TABLE  (MVT) )
@@ -440,6 +442,8 @@ contains
     NoahmpIO%TDLEF_TABLE        = undefined_real
     NoahmpIO%BP_TABLE           = undefined_real
     NoahmpIO%MP_TABLE           = undefined_real
+    NoahmpIO%MEDLYNG1_TABLE     = undefined_real
+    NoahmpIO%MEDLYNG0_TABLE     = undefined_real
     NoahmpIO%QE25_TABLE         = undefined_real
     NoahmpIO%RMS25_TABLE        = undefined_real
     NoahmpIO%RMR25_TABLE        = undefined_real
@@ -782,6 +786,8 @@ contains
     NoahmpIO%TDLEF_TABLE  (1:NVEG) = TDLEF  (1:NVEG)
     NoahmpIO%BP_TABLE     (1:NVEG) = BP     (1:NVEG)
     NoahmpIO%MP_TABLE     (1:NVEG) = MP     (1:NVEG)
+    NoahmpIO%MEDLYNG1_TABLE (1:NVEG) = MEDLYNG1 (1:NVEG)
+    NoahmpIO%MEDLYNG0_TABLE (1:NVEG) = MEDLYNG0 (1:NVEG)
     NoahmpIO%QE25_TABLE   (1:NVEG) = QE25   (1:NVEG)
     NoahmpIO%RMS25_TABLE  (1:NVEG) = RMS25  (1:NVEG)
     NoahmpIO%RMR25_TABLE  (1:NVEG) = RMR25  (1:NVEG)

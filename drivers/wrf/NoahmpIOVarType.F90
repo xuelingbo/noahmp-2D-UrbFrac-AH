@@ -42,7 +42,7 @@ module NoahmpIOVarType
     integer                                                ::  ISLAKE              ! land cover category for lake
     integer                                                ::  URBTYPE_beg         ! urban type start number - 1
     integer                                                ::  IOPT_DVEG           ! dynamic vegetation   
-    integer                                                ::  IOPT_CRS            ! canopy stomatal resistance (1-> Ball-Berry; 2->Jarvis)   
+    integer                                                ::  IOPT_CRS            ! canopy stomatal resistance (1-> Ball-Berry; 2->Jarvis; 3->Medlyn)   
     integer                                                ::  IOPT_BTR            ! soil moisture factor for stomatal resistance (1-> Noah; 2-> CLM; 3-> SSiB)
     integer                                                ::  IOPT_RUNSRF         ! surface runoff and groundwater (1->SIMGM; 2->SIMTOP; 3->Schaake96; 4->BATS)
     integer                                                ::  IOPT_RUNSUB         ! subsurface runoff option
@@ -847,6 +847,8 @@ module NoahmpIOVarType
     real(kind=kind_noahmp), allocatable, dimension(:)      :: AVCMX_TABLE               ! q10 for vcmx25
     real(kind=kind_noahmp), allocatable, dimension(:)      :: BP_TABLE                  ! minimum leaf conductance (umol/m2/s)
     real(kind=kind_noahmp), allocatable, dimension(:)      :: MP_TABLE                  ! slope of conductance-to-photosynthesis relationship
+    real(kind=kind_noahmp), allocatable, dimension(:)      :: MEDLYNG1_TABLE            ! Medlyn stomatal slope parameter g1 (kPa^0.5)
+    real(kind=kind_noahmp), allocatable, dimension(:)      :: MEDLYNG0_TABLE            ! Medlyn minimum leaf conductance g0 (umol/m2/s)
     real(kind=kind_noahmp), allocatable, dimension(:)      :: QE25_TABLE                ! quantum efficiency at 25c (umol co2 / umol photon)
     real(kind=kind_noahmp), allocatable, dimension(:)      :: AQE_TABLE                 ! q10 for qe25
     real(kind=kind_noahmp), allocatable, dimension(:)      :: RMF25_TABLE               ! leaf maintenance respiration at 25c (umol co2/m2/s)

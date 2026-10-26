@@ -110,6 +110,8 @@ module BiochemVarType
     real(kind=kind_noahmp) :: CarboxylRateMaxQ10         ! change in maximum rate of carboxylation for every 10-deg C temperature change
     real(kind=kind_noahmp) :: PhotosynPathC3             ! C3 photosynthetic pathway indicator: 0.0 = c4, 1.0 = c3
     real(kind=kind_noahmp) :: SlopeConductToPhotosyn     ! slope of conductance-to-photosynthesis relationship
+    real(kind=kind_noahmp) :: SlopeConductMedlyn         ! Medlyn stomatal slope parameter g1 [kPa^0.5]
+    real(kind=kind_noahmp) :: ConductanceLeafMinMedlyn   ! Medlyn minimum leaf conductance g0 [umol/m2/s]
     real(kind=kind_noahmp) :: TemperatureMinPhotosyn     ! minimum temperature for photosynthesis [K]
     real(kind=kind_noahmp) :: LeafAreaPerMass1side       ! single-side leaf area per mass [m2/kg] 
     real(kind=kind_noahmp) :: NitrogenConcFoliageMax     ! foliage nitrogen concentration when f(n)=1 (%)

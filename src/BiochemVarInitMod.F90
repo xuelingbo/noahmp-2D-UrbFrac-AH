@@ -109,6 +109,8 @@ contains
     noahmp%biochem%param%CarboxylRateMaxQ10         = undefined_real
     noahmp%biochem%param%PhotosynPathC3             = undefined_real
     noahmp%biochem%param%SlopeConductToPhotosyn     = undefined_real
+    noahmp%biochem%param%SlopeConductMedlyn         = undefined_real
+    noahmp%biochem%param%ConductanceLeafMinMedlyn   = undefined_real
     noahmp%biochem%param%TemperatureMinPhotosyn     = undefined_real
     noahmp%biochem%param%LeafAreaPerMass1side       = undefined_real
     noahmp%biochem%param%NitrogenConcFoliageMax     = undefined_real

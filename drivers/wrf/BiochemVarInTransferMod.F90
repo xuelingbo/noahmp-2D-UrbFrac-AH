@@ -55,6 +55,8 @@ contains
     noahmp%biochem%param%CarboxylRateMaxQ10         = NoahmpIO%AVCMX_TABLE  (VegType)
     noahmp%biochem%param%PhotosynPathC3             = NoahmpIO%C3PSN_TABLE  (VegType)
     noahmp%biochem%param%SlopeConductToPhotosyn     = NoahmpIO%MP_TABLE     (VegType)
+    noahmp%biochem%param%SlopeConductMedlyn         = NoahmpIO%MEDLYNG1_TABLE (VegType)
+    noahmp%biochem%param%ConductanceLeafMinMedlyn   = NoahmpIO%MEDLYNG0_TABLE (VegType)
     noahmp%biochem%param%RespMaintQ10               = NoahmpIO%ARM_TABLE    (VegType)
     noahmp%biochem%param%RespMaintLeaf25C           = NoahmpIO%RMF25_TABLE  (VegType)
     noahmp%biochem%param%RespMaintStem25C           = NoahmpIO%RMS25_TABLE  (VegType)

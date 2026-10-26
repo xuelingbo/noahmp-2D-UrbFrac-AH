@@ -121,7 +121,7 @@ contains
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(IN   ) ::  XICE         ! fraction of grid that is seaice
     REAL,                                            INTENT(IN   ) ::  XICE_THRES   ! fraction of grid determining seaice
     INTEGER,                                         INTENT(IN   ) ::  IDVEG        ! dynamic vegetation (1 -> off ; 2 -> on) with opt_crs = 1      
-    INTEGER,                                         INTENT(IN   ) ::  IOPT_CRS     ! canopy stomatal resistance (1-> Ball-Berry; 2->Jarvis)
+    INTEGER,                                         INTENT(IN   ) ::  IOPT_CRS     ! canopy stomatal resistance (1-> Ball-Berry; 2->Jarvis; 3->Medlyn)
     INTEGER,                                         INTENT(IN   ) ::  IOPT_BTR     ! soil moisture factor for stomatal resistance (1-> Noah; 2-> CLM; 3-> SSiB)
     INTEGER,                                         INTENT(IN   ) ::  IOPT_RUNSUB  ! subsurface runoff and groundwater (currently keep the same as surface runoff option)
     INTEGER,                                         INTENT(IN   ) ::  IOPT_RUNSRF  ! surface runoff (1->SIMGM; 2->SIMTOP; 3->Schaake96; 4->BATS; 5->MMF; 6->VIC; 7->XianAnJiang; 8->DynVIC)

@@ -87,6 +87,7 @@ OBJS = ConstantDefineMod.o \
        ResistanceAboveCanopyMostMod.o \
        ResistanceCanopyStomataBallBerryMod.o \
        ResistanceCanopyStomataJarvisMod.o \
+       ResistanceCanopyStomataMedlynMod.o \
        ResistanceLeafToGroundMod.o \
        VaporPressureSaturationMod.o \
        SurfaceEnergyFluxVegetatedMod.o \
@@ -290,12 +291,14 @@ ResistanceAboveCanopyMostMod.o:          ../utility/Machine.o NoahmpVarType.o Co
 ResistanceCanopyStomataBallBerryMod.o:   ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 ResistanceCanopyStomataJarvisMod.o:      ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o \
                                          HumiditySaturationMod.o
+ResistanceCanopyStomataMedlynMod.o:      ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 ResistanceLeafToGroundMod.o:             ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 VaporPressureSaturationMod.o:            ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 SurfaceEnergyFluxVegetatedMod.o:         ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o \
                                          VaporPressureSaturationMod.o ResistanceAboveCanopyMostMod.o \
                                          ResistanceAboveCanopyChen97Mod.o ResistanceLeafToGroundMod.o \
-                                         ResistanceCanopyStomataBallBerryMod.o ResistanceCanopyStomataJarvisMod.o
+                                         ResistanceCanopyStomataBallBerryMod.o ResistanceCanopyStomataJarvisMod.o \
+                                         ResistanceCanopyStomataMedlynMod.o
 ResistanceBareGroundChen97Mod.o:         ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 ResistanceBareGroundMostMod.o:           ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o
 SurfaceEnergyFluxBareGroundMod.o:        ../utility/Machine.o NoahmpVarType.o ConstantDefineMod.o \
