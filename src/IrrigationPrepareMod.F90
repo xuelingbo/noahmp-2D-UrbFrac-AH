@@ -67,7 +67,7 @@ contains
 
     ! trigger irrigation only at soil water timestep to be consistent for solving soil water
     if ( FlagSoilProcess .eqv. .true. ) then
-       if ( ((VegType == 8) .or. (VegType == 9)) .and. &        ! xue.lingbo 2026/10/16 for Adelaide parks
+       if ( ((VegType < 21) .and. (VegType /= 13) .and. (VegType /= 17)) .and. &        ! xue.lingbo 2026/10/16 for Adelaide parks
             (IrrigationFracGrid >= IrriFracThreshold) .and. &
        ! if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) .and. &
             (RainfallRefHeight < (IrriStopPrecipThr/3600.0)) .and. &

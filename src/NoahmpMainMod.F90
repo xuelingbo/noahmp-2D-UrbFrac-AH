@@ -81,7 +81,7 @@ contains
     !--------------------------------------------------------------------- 
 
     ! call sprinkler irrigation before canopy process to have canopy interception
-    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationAmtSprinkler > 0.0) ) &   ! xue.lingbo 2026/10/16 for Adelaide parks
+    if ( ((VegType < 21) .and. (VegType /= 13) .and. (VegType /= 17)) .and. (IrrigationAmtSprinkler > 0.0) ) &   ! xue.lingbo 2026/10/16 for Adelaide parks
     !if ( (FlagCropland .eqv. .true.) .and. (IrrigationAmtSprinkler > 0.0) ) &
        call IrrigationSprinkler(noahmp)
 

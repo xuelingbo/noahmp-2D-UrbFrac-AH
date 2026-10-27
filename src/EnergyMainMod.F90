@@ -337,7 +337,7 @@ contains
     call SoilSnowWaterPhaseChange(noahmp)
 
     ! update sensible heat flux due to sprinkler irrigation evaporation
-    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &   ! xue.lingbo 2026/10/22 for Adelaide parks
+    if ( ((VegType < 21) .and. (VegType /= 13) .and. (VegType /= 17)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &   ! xue.lingbo 2026/10/22 for Adelaide parks
     !if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) &
        HeatSensibleSfc = HeatSensibleSfc - HeatLatentIrriEvap
 

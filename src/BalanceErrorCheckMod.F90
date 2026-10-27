@@ -112,7 +112,7 @@ contains
 ! ----------------------------------------------------------------------
 
     ! before water balance check, add irrigation water to precipitation
-    if ( ((VegType == 8) .or. (VegType == 9)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then   ! xue.lingbo 2026/10/22 for Adelaide parks
+    if ( ((VegType < 21) .and. (VegType /= 13) .and. (VegType /= 17)) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then   ! xue.lingbo 2026/10/22 for Adelaide parks
     !if ( (FlagCropland .eqv. .true.) .and. (IrrigationFracGrid >= IrriFracThreshold) ) then
        PrecipTotRefHeight = PrecipTotRefHeight + IrrigationRateSprinkler * 1000.0 / MainTimeStep  ! irrigation
     endif
